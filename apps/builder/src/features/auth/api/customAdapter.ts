@@ -49,14 +49,15 @@ export function customAdapter(p: PrismaClient): Adapter {
             workspaceInvitations.length > 0
               ? undefined
               : {
-                  create: {
-                    role: WorkspaceRole.ADMIN,
-                    workspace: {
-                      create: newWorkspaceData,
-                    },
+                create: {
+                  role: WorkspaceRole.ADMIN,
+                  workspace: {
+                    create: newWorkspaceData,
                   },
                 },
+              },
           onboardingCategories: [],
+          jwt: null,
         },
         include: {
           workspaces: { select: { workspaceId: true } },

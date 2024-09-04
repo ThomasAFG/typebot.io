@@ -68,9 +68,9 @@ if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
         auth:
           env.SMTP_USERNAME || env.SMTP_PASSWORD
             ? {
-                user: env.SMTP_USERNAME,
-                pass: env.SMTP_PASSWORD,
-              }
+              user: env.SMTP_USERNAME,
+              pass: env.SMTP_PASSWORD,
+            }
             : undefined,
       },
       from: env.NEXT_PUBLIC_SMTP_FROM,
@@ -256,7 +256,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  return await NextAuth(req, res, getAuthOptions({ restricted }))
+  await NextAuth(req, res, getAuthOptions({ restricted }))
+  return
 }
 
 const updateLastActivityDate = async (user: User) => {
@@ -287,8 +288,7 @@ const getUserGroups = async (account: Account): Promise<string[]> => {
         page = 1
       ): Promise<{ full_path: string }[]> => {
         const res = await fetch(
-          `${
-            env.GITLAB_BASE_URL || 'https://gitlab.com'
+          `${env.GITLAB_BASE_URL || 'https://gitlab.com'
           }/api/v4/groups?per_page=100&page=${page}`,
           { headers: { Authorization: `Bearer ${accessToken}` } }
         )
